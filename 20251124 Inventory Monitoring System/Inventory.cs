@@ -17,6 +17,7 @@ namespace _20251124_Inventory_Monitoring_System
         /// </summary>
         public static void GenerateInventory()
         {
+            /// Populate the inventory with initial products
             products.Add(new Product("Magbuhos Personal Computer"));
             products.Add(new Product("Magbuhos Smartphone Pro"));
             products.Add(new Product("Magbuhos Smartphone Pro"));
@@ -31,6 +32,7 @@ namespace _20251124_Inventory_Monitoring_System
             products.Add(new Product("Magbuhos Personal Computer"));
             products.Add(new Product("Magbuhos Personal Computer")); 
             products.Add(new Product("Magbuhos Personal Computer"));
+            products.Add(new Product("Magbuhos AI Microprocessor"));
 
             /// Generate the list of distinct products by comparing each product name from the inventory
             foreach (var product in products)
