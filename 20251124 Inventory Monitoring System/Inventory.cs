@@ -33,26 +33,6 @@ namespace _20251124_Inventory_Monitoring_System
             products.Add(new Product("Magbuhos Personal Computer")); 
             products.Add(new Product("Magbuhos Personal Computer"));
             products.Add(new Product("Magbuhos AI Microprocessor"));
-
-            /// Generate the list of distinct products by comparing each product name from the inventory
-            foreach (var product in products)
-            {
-                bool found = false;
-
-                foreach (var distinctProduct in distinctProducts)
-                {
-                    if (product.Name == distinctProduct.Name)
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found)
-                {
-                    distinctProducts.Add(product);
-                }
-            }
         }
 
         /// <summary>
@@ -65,6 +45,10 @@ namespace _20251124_Inventory_Monitoring_System
             while (doLoop)
             {
                 Console.Clear();
+
+                /// Generate the list of distinct products
+                RegenerateDistinctProducts();
+
                 /// Display inventory summary by countring the quantity of each distinct product
                 Console.WriteLine("SUMMARY");
                 Console.WriteLine();
@@ -94,6 +78,8 @@ namespace _20251124_Inventory_Monitoring_System
                 "Update Quantity",
                 //"Add Product", // Not required
                 //"Remove Product", // Not required
+                "Add Product",
+                "Delete Product",
                 "Exit"
             };
 
@@ -104,7 +90,7 @@ namespace _20251124_Inventory_Monitoring_System
 
             Console.WriteLine();
 
-            while (input < 1 || input > 3)
+            while (input < 1 || input > 4)
             {
                 Console.Write("Select an option: ");
                 int.TryParse(Console.ReadLine(), out input);
@@ -116,6 +102,12 @@ namespace _20251124_Inventory_Monitoring_System
                     Modify_Inventory.UpdateQuantity();
                     break;
                 case 2:
+                    Modify_Inventory.AddProduct();
+                    break;
+                case 3:
+                    Modify_Inventory.RemoveProduct();
+                    break;
+                case 4:
                     doLoop = false;
                     break;
             }
@@ -140,6 +132,30 @@ namespace _20251124_Inventory_Monitoring_System
             }
 
             Console.WriteLine($"{distinctProduct.Name}:\t{count}");
+        }
+
+        public static void RegenerateDistinctProducts()
+        {
+            distinctProducts.Clear();
+            /// Generate the list of distinct products by comparing each product name from the inventory
+            foreach (var product in products)
+            {
+                bool found = false;
+
+                foreach (var distinctProduct in distinctProducts)
+                {
+                    if (product.Name == distinctProduct.Name)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    distinctProducts.Add(product);
+                }
+            }
         }
     }
 }

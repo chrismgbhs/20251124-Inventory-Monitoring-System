@@ -107,5 +107,70 @@ namespace _20251124_Inventory_Monitoring_System
                 break;
             }
         }
+        /// <summary>
+        /// This method allows the user to add a new product to the inventory.
+        /// </summary>
+        public static void AddProduct()
+        {
+            int quantity = 0;
+            string productName = "";
+
+            Console.Clear();    
+
+            while (productName == "")
+            {
+                Console.Write("Enter the name of the new product: ");
+                productName = Console.ReadLine();
+            }
+
+            while (quantity <= 0)
+            {
+                Console.Write("Enter the quantity of the new product: ");
+                int.TryParse(Console.ReadLine(), out quantity);
+            }
+
+            for (int counter = 0; counter < quantity; counter++)
+            {
+                Inventory.products.Add(new Product(productName));
+            }
+        }
+        /// <summary>
+        /// This method allows the user to remove a product from the inventory.
+        /// </summary>
+        public static void RemoveProduct()
+        {
+            bool productFound = false;
+            string productName = "";
+            Console.Clear();
+
+            while (productName == "")
+            {
+                Console.Write("Enter the name of the product to delete: ");
+                productName = Console.ReadLine();
+            }
+
+            foreach (var product in Inventory.products)
+            {
+                if (product.Name == productName)
+                {
+                    Inventory.products.Remove(product);
+                    productFound = true;
+                    break;
+                }
+            }
+
+            if (!productFound)
+            {
+                Console.WriteLine("Product not found in inventory.");
+            }
+
+            else
+            {
+                Console.WriteLine("Product deleted successfully.");
+            }
+
+                Console.WriteLine("Please press any key to continue...");
+            Console.ReadKey();
+        }
     }
 }
