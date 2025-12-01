@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.SymbolStore;
 using System.Linq;
@@ -11,6 +11,7 @@ namespace _20251124_Inventory_Monitoring_System
     {
         public static List<Product> products = new List<Product>();
         public static List<Product> distinctProducts = new List<Product>();
+        public static List<string> productTypes = new List<string>();
 
         /// <summary>
         /// Initial inventory with some products
@@ -18,21 +19,29 @@ namespace _20251124_Inventory_Monitoring_System
         public static void GenerateInventory()
         {
             /// Populate the inventory with initial products
-            products.Add(new Product("Magbuhos Personal Computer"));
-            products.Add(new Product("Magbuhos Smartphone Pro"));
-            products.Add(new Product("Magbuhos Smartphone Pro"));
-            products.Add(new Product("Magbuhos IC Recorder"));
-            products.Add(new Product("Magbuhos IC Recorder"));
-            products.Add(new Product("Magbuhos IC Recorder"));
-            products.Add(new Product("Magbuhos IC Recorder"));
-            products.Add(new Product("Magbuhos IC Recorder"));
-            products.Add(new Product("Magbuhos Smartphone Pro"));
-            products.Add(new Product("Magbuhos Smartphone Pro"));
-            products.Add(new Product("Magbuhos Smartphone Pro"));
-            products.Add(new Product("Magbuhos Personal Computer"));
-            products.Add(new Product("Magbuhos Personal Computer")); 
-            products.Add(new Product("Magbuhos Personal Computer"));
-            products.Add(new Product("Magbuhos AI Microprocessor"));
+            products.Add(new Product("Magbuhos Personal Computer","IT Related"));
+            products.Add(new Product("Magbuhos Smartphone Pro", "IT Related"));
+            products.Add(new Product("Magbuhos Smartphone Pro", "IT Related"));
+            products.Add(new Product("Magbuhos IC Recorder", "IT Related"));
+            products.Add(new Product("Magbuhos IC Recorder", "IT Related"));
+            products.Add(new Product("Magbuhos Angel Fish", "Fish Products"));
+            products.Add(new Product("Magbuhos IC Recorder", "IT Related"));
+            products.Add(new Product("Magbuhos Janitor Fish", "Fish Products"));
+            products.Add(new Product("Magbuhos IC Recorder", "IT Related"));
+            products.Add(new Product("Magbuhos IC Recorder", "IT Related"));
+            products.Add(new Product("Magbuhos Smartphone Pro", "IT Related"));
+            products.Add(new Product("Magbuhos Janitor Fish", "Fish Products"));
+            products.Add(new Product("Magbuhos Smartphone Pro", "IT Related"));
+            products.Add(new Product("Magbuhos Angel Fish", "Fish Products"));
+            products.Add(new Product("Magbuhos Smartphone Pro", "IT Related"));
+            products.Add(new Product("Magbuhos Personal Computer", "IT Related"));
+            products.Add(new Product("Magbuhos Personal Computer", "IT Related")); 
+            products.Add(new Product("Magbuhos Personal Computer", "IT Related"));
+            products.Add(new Product("Magbuhos AI Microprocessor", "IT Related"));
+            products.Add(new Product("Magbuhos Janitor Fish", "Fish Products"));
+            products.Add(new Product("Magbuhos Angel Fish", "Fish Products"));
+            products.Add(new Product("Magbuhos Goldfish", "Fish Products"));
+            products.Add(new Product("Magbuhos Arwana", "Fish Products"));
         }
 
         /// <summary>
@@ -49,16 +58,27 @@ namespace _20251124_Inventory_Monitoring_System
                 /// Generate the list of distinct products
                 RegenerateDistinctProducts();
 
+                /// Classify each type of products
+                RegenerateDistinctProductTypes();
+
                 /// Display inventory summary by countring the quantity of each distinct product
                 Console.WriteLine("SUMMARY");
                 Console.WriteLine();
 
-                foreach (var distinctProduct in distinctProducts)
+                foreach (string type in productTypes)
                 {
-                    DisplayProductQuantity(distinctProduct, out int count);
+                    Console.WriteLine(type);
+                    
+                    foreach (var distinctProduct in distinctProducts)
+                    {
+                        if (distinctProduct.Type == type) 
+                        {
+                            DisplayProductQuantity(distinctProduct, out int count);
+                        }       
+                    }
+                    Console.WriteLine();
                 }
-
-                Console.WriteLine();
+                
                 OtherModes(out doLoop);
             }
             
@@ -153,6 +173,71 @@ namespace _20251124_Inventory_Monitoring_System
                 {
                     distinctProducts.Add(product);
                 }
+            }
+        }
+
+        /// <summary>
+        /// This method classifies the types of each products.
+        /// </summary>
+        public static void RegenerateDistinctProductTypes()
+        {
+            productTypes.Clear();
+
+            foreach (var product in products)
+            {
+                bool typeFound = false;
+
+                foreach (string type in productTypes)
+                {
+                    if (product.Type == type)
+                    {
+                        typeFound = true;
+                        break;
+                    }
+                }
+
+                if (!typeFound)
+                {
+                    productTypes.Add(product.Type);
+                }
+            }
+        }
+
+        /// <summary>
+        /// This method prints products under a classified type.
+        /// </summary>
+        /// <param name="typeInput"></param>
+        public static void PrintClassifiedProducts(int typeInput, out int startingPoint, out int lastPoint)
+        {
+            bool startingPointFound = false;
+            startingPoint = -1;
+            lastPoint = -1;
+
+            for (int counter = 0; counter <distinctProducts.Count; counter++)
+            {
+                if (distinctProducts[counter].Type == productTypes[typeInput - 1])
+                {
+                    Console.WriteLine($"{counter + 1}. {distinctProducts[counter].Name}");
+
+                    while (!startingPointFound) 
+                    {
+                        startingPoint = counter;
+                        startingPointFound = true;
+                    }
+                    
+                    lastPoint = counter;
+                }
+            }
+        }
+
+        /// <summary>
+        /// This method prints each type of products.
+        /// </summary>
+        public static void PrintProductTypes()
+        {
+            for (int counter = 0; counter < productTypes.Count; counter++)
+            {
+                Console.WriteLine($"{counter + 1}: {productTypes[counter]}");
             }
         }
     }
