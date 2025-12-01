@@ -43,6 +43,8 @@ namespace _20251124_Inventory_Monitoring_System
                 int.TryParse(Console.ReadLine(), out quantityOption);
             }
 
+            Inventory.DisplayProductQuantity(Inventory.distinctProducts[productInput - 1], out currentQuantity);
+
             switch (quantityOption)
             {
 
@@ -50,8 +52,6 @@ namespace _20251124_Inventory_Monitoring_System
                 case 1:
                     int increaseAmount = 0;
                     Console.WriteLine();
-
-                    Inventory.DisplayProductQuantity(Inventory.distinctProducts[productInput - 1], out currentQuantity);
 
                     while (increaseAmount <= 0)
                     {
@@ -68,7 +68,6 @@ namespace _20251124_Inventory_Monitoring_System
                 /// This case decreases the quantity of a selected product by removing instances of that product from the inventory list.
                 case 2:
                     Console.WriteLine();
-                    Inventory.DisplayProductQuantity(Inventory.distinctProducts[productInput - 1], out currentQuantity);
 
                     bool loopYes = true;
 

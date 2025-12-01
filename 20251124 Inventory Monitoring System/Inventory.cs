@@ -76,8 +76,6 @@ namespace _20251124_Inventory_Monitoring_System
             List<string> options = new List<string>()
             {
                 "Update Quantity",
-                //"Add Product", // Not required
-                //"Remove Product", // Not required
                 "Add Product",
                 "Delete Product",
                 "Exit"
