@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,17 +17,29 @@ namespace _20251124_Inventory_Monitoring_System
             int productInput = 0;
             int quantityOption = 0;
             int currentQuantity = 0;
+            int typeInput = 0;
+            int startingPoint;
+            int lastPoint;
 
-            for (int counter = 0; counter < Inventory.distinctProducts.Count; counter++)
+            Inventory.PrintProductTypes();
+
+            while (typeInput == 0)
             {
-                Console.WriteLine($"{counter + 1}. {Inventory.distinctProducts[counter].Name}");
+                Console.Write("Please enter product type: ");
+                int.TryParse(Console.ReadLine(), out typeInput);
             }
+
+            Console.Clear();
+            
+            Inventory.PrintClassifiedProducts(typeInput, out startingPoint, out lastPoint);
 
             Console.WriteLine();
 
-            while (productInput < 1 || productInput > Inventory.distinctProducts.Count)
+            while (productInput < startingPoint + 1 || productInput > lastPoint + 1 || Inventory.distinctProducts[productInput - 1].Type != Inventory.productTypes[typeInput - 1])
             {
-                Console.Write($"Select a product to update (1-{Inventory.distinctProducts.Count}): ");
+                productInput = 0;
+               
+                Console.Write($"Select a product to update ({startingPoint+1}-{lastPoint+1}): ");
                 int.TryParse(Console.ReadLine(), out productInput);
             }
 
@@ -61,7 +73,7 @@ namespace _20251124_Inventory_Monitoring_System
 
                     for (int counter = 0; counter < increaseAmount; counter++)
                     {
-                        Inventory.products.Add(new Product(Inventory.distinctProducts[productInput-1].Name));
+                        Inventory.products.Add(new Product(Inventory.distinctProducts[productInput-1].Name, Inventory.distinctProducts[productInput - 1].Type));
                     }
                     break;
 
@@ -113,6 +125,8 @@ namespace _20251124_Inventory_Monitoring_System
         {
             int quantity = 0;
             string productName = "";
+            string productType = "";
+            bool typeFound = false;
 
             Console.Clear();    
 
@@ -120,6 +134,21 @@ namespace _20251124_Inventory_Monitoring_System
             {
                 Console.Write("Enter the name of the new product: ");
                 productName = Console.ReadLine();
+            }
+
+            while (productType == "")
+            {
+                Console.Write("Enter the type of the new product: ");
+                productType = Console.ReadLine();
+
+                foreach (var product in Inventory.products)
+                {
+                    if (productName == product.Name && productType != product.Type)
+                    {
+                        Console.WriteLine("Product already found at a different product type.");
+                        productType = "";
+                    }
+                }
             }
 
             while (quantity <= 0)
@@ -130,7 +159,7 @@ namespace _20251124_Inventory_Monitoring_System
 
             for (int counter = 0; counter < quantity; counter++)
             {
-                Inventory.products.Add(new Product(productName));
+                Inventory.products.Add(new Product(productName,productType));
             }
         }
         /// <summary>
@@ -140,13 +169,35 @@ namespace _20251124_Inventory_Monitoring_System
         {
             bool productFound = false;
             string productName = "";
+            int productInput = 0;
+            int typeInput = 0;
+            int startingPoint;
+            int lastPoint;
             Console.Clear();
 
-            while (productName == "")
+            Inventory.PrintProductTypes();
+
+            while (typeInput == 0)
             {
-                Console.Write("Enter the name of the product to delete: ");
-                productName = Console.ReadLine();
+                Console.Write("Please enter product type: ");
+                int.TryParse(Console.ReadLine(), out typeInput);
             }
+
+            Console.Clear();
+
+            Inventory.PrintClassifiedProducts(typeInput, out startingPoint, out lastPoint);
+
+            Console.WriteLine();
+
+            while (productInput < startingPoint+1 || productInput > lastPoint+1 || Inventory.distinctProducts[productInput-1].Type != Inventory.productTypes[typeInput-1])
+            {
+                productInput = 0;
+
+                Console.Write($"Select a product to remove ({startingPoint+1}-{lastPoint+1}): ");
+                int.TryParse(Console.ReadLine(), out productInput);
+            }
+
+            productName = Inventory.distinctProducts[productInput-1].Name;
 
             foreach (var product in Inventory.products)
             {
